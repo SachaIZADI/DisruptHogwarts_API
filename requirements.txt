@@ -1,0 +1,16 @@
+numpy==1.15.2
+Click==7.0
+Flask==1.0.2
+Jinja2==2.10
+MarkupSafe==1.0
+Werkzeug==0.14.1
+chardet==3.0.4
+get==1.0.3
+idna==2.7
+itsdangerous==0.24
+post==1.0.2
+public==1.0.3
+query-string==1.0.2
+request==1.0.2
+setuptools	39.0.1	40.4.3
+urllib3	1.23	1.23
