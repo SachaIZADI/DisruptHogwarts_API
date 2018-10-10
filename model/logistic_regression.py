@@ -22,7 +22,7 @@ class LogisticRegression:
     '''
 
 
-    def __init__(self, X, y=None,
+    def __init__(self, X=None, y=None,
                  path_to_beta=None,
                  regularization=None, C=1,
                  optimizer='gradient_descent', optimizer_params={'alpha':0.5,'n':100}):
