@@ -1,5 +1,5 @@
 import numpy as np
-from describe import Statistics
+from model.describe import Statistics
 import os
 import json
 

@@ -104,14 +104,8 @@ class LogisticRegression:
         :param x: a 1D np.array of floats.
         '''
         probas = []
-        bTx = []
         for i in range(len(self.unique_labels)):
-            bTx += [np.dot(self.beta[self.unique_labels[i]], x)]
-        m = max(bTx)
-        for i in range(len(self.unique_labels)):
-            bTx[i] -= m
-        for i in range(len(self.unique_labels)):
-            probas += [math.exp(bTx[i])]
+            probas += [math.exp(np.dot(self.beta[self.unique_labels[i]], x))]
         probas = self.softmax(np.array(probas))
 
         probas_labels = {}
