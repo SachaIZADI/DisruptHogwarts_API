@@ -61,7 +61,7 @@ def train():
     sc.train()
     sc.transform()
 
-    l = LogisticRegression(X=X, y=y)
+    l = LogisticRegression(X=X, y=y, optimizer_params={'alpha':0.5,'n':50})
     l.train()
 
     return features, l.beta
