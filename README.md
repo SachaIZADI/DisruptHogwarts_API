@@ -33,10 +33,12 @@ Output:
 Server is now accessible on `http://127.0.0.1:5000`
 
 The API can be run directly in the browser:
+
 <img src = "img/browser_train.png" height="150">
 <img src = "img/browser_predict.png" height="150">
 
 Or by using scripts such as [`test_api.py`](https://github.com/SachaIZADI/DisruptHogwarts_API/blob/master/test_and_debug/test_api.py):
+
 <img src = "img/train.png" height="150">
 <img src = "img/predict.png" height="150">
 <img src = "img/transfer.png" height="150">
