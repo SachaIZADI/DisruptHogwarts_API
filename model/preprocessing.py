@@ -18,7 +18,7 @@ class MeanImputation:
         print(m.X)
     '''
 
-    def __init__(self, X, path_to_mean_imputation=None):
+    def __init__(self, X, school='hogwarts', path_to_mean_imputation=None):
         '''
         :param X: a np.array of floats. The feature matrix.
         :param path_to_mean_imputation: a string. The path to a json of means.
@@ -26,6 +26,7 @@ class MeanImputation:
         self.X = X
         self.path_to_mean_imputation = path_to_mean_imputation
         self.mean_imputation_dict = None
+        self.school = school
 
 
     def train(self):
@@ -40,7 +41,10 @@ class MeanImputation:
             self.mean_imputation_dict[j] = m
 
         # Saves the means in a json file
-        self.path_to_mean_imputation = 'results/mean_imputation.json'
+        if self.school == 'hogwarts':
+            self.path_to_mean_imputation = 'results/mean_imputation.json'
+        else:
+            self.path_to_mean_imputation = 'results/mean_imputation_%s.json' % self.school
         dirname = os.path.dirname(__file__)
         file_name = os.path.join(dirname, self.path_to_mean_imputation)
         with open(file_name, 'w+') as outfile:
@@ -84,7 +88,7 @@ class Scaling:
         print(sc.X)
     '''
 
-    def __init__(self, X, path_to_scaling=None):
+    def __init__(self, X, school='hogwarts', path_to_scaling=None):
         '''
         :param X: a np.array of floats. The feature matrix.
         :param path_to_scaling: a string. The path to a json of (µ_j,σ_j).
@@ -93,6 +97,7 @@ class Scaling:
         self.path_to_scaling = path_to_scaling
         self.mean_dict = None
         self.std_dict = None
+        self.school = school
 
 
     def train(self):
@@ -111,7 +116,10 @@ class Scaling:
             self.std_dict[j] = std
 
         # Saves the means and std's to a json file
-        self.path_to_scaling = 'results/scaling.json'
+        if self.school == 'hogwarts':
+            self.path_to_scaling = 'results/scaling.json'
+        else :
+            self.path_to_scaling = 'results/scaling_%s.json' % self.school
         dirname = os.path.dirname(__file__)
         file_name = os.path.join(dirname, self.path_to_scaling)
         with open(file_name, 'w+') as outfile:
