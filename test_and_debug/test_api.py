@@ -1,6 +1,8 @@
 import requests
 import json
 import numpy as np
+import pandas as pd
+import os
 
 
 BASE_URL = 'http://127.0.0.1:5000'
@@ -24,20 +26,31 @@ print(response.text)
 """
 
 # Transfer learning
+
+
+dirname = os.path.dirname(__file__)
+file_name = os.path.join(dirname,'polytechnique_dataset_transfer.csv')
+data_set = pd.read_csv(file_name)
+
+y = np.array(data_set['Hogwarts House'])
+data_set.drop('Hogwarts House',axis=1,inplace=True)
+X = np.array(data_set)
+
+
 data = json.dumps({
     'school':'polytechnique',
     'regularization':{
-        'method':'l2',
+        'method':None,
         'C':0.75
     },
     'optimizer':'sgd',
     'optimizer_params':{
-        'alpha':0.01,
+        'alpha':0.1,
         'n':5,
         'batch_size':14
     },
-    'X':np.array([[1,2,2],[1,3,1],[-1,5,6],[2,4,7]]).tolist(),
-    'y':np.array(["Gryffindor","Hufflepuff","Ravenclaw","Slytherin"]).tolist()
+    'X':X.tolist(),
+    'y':y.tolist()
 })
 
 response = requests.get("{}/transfer".format(BASE_URL), json=data)
