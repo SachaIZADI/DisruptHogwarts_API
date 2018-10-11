@@ -19,3 +19,21 @@ data = json.dumps({'school':'hogwarts',
                     'ancient_runes': 300})
 response = requests.get("{}/predict".format(BASE_URL), json=data)
 print(response.text)
+
+
+
+# Transfer learning
+data = json.dumps({
+    'school':'polytechnique',
+    'regularization':{
+        'method':'l2',
+        'C':0.75
+    },
+    'optimizer':'sgd',
+    'optimizer_params':{
+        'alpha':0.01,
+        'n':5,
+        'batch_size':14
+    }
+
+                  })

@@ -11,9 +11,7 @@ import model.logreg_train
 - https://github.com/Wintellect/DataScienceExamples/blob/master/Regression/SimpleLinearRegressionAPI.py
 """
 
-
 app = Flask(__name__)
-
 
 
 # Train the model on the base dataset
@@ -67,26 +65,44 @@ def predict():
             return "Please enter values in the correct format: {\"school\":str, \"astronomy\":-1000<float<1000, \"herbology\":-10<float<10, \"ancient_runes\":250<float<750}."
 
 
+
+# Transfer learning function : Takes the estimate of ß based on hogwarts data as a starting point, and estimate ß for another school (e.g. 'polytechnique')
 @app.route('/transfer')
 def transfer():
+    # Send a matrix of features
+    # Send an array of targets
+    # Send school
+    # Send l2, C
+    # Send sgd / gd + params (alpha, n, batch_size)
     if request.method == 'GET':
         try:
-            try:
-                #TODO : WORK ON HERE
-                # Data is sent via a .py script like in tests/test_api.py
-                data = json.loads(request.json)
-                school = data['school']
-                astronomy = float(data['astronomy']) # -1000 < astronomy < 1000
-                herbology = float(data['herbology']) # -10 < herbology < 10
-                ancient_runes = float(data['ancient_runes']) # 250 < ancient_runes < 750
-            except:
-                # Data is sent via an url (e.g. in Chrome)
-                # http://127.0.0.1:5000/predict?school=hogwarts&astronomy=-800&herbology=-2&ancient_runes=300
-                data = request.args
-                school = data.get('school')
-                astronomy = float(data.get('astronomy'))
-                herbology = float(data.get('herbology'))
-                ancient_runes = float(data.get('ancient_runes'))
+            #TODO : WORK ON HERE
+            # Data is sent via a .py script like in tests/test_api.py
+            data = json.loads(request.json)
+            school = data['school']
+            regularization = data['regularization']
+            if regularization['method'] == 'None':
+                method = None
+                C = 0
+            else :
+                method = regularization['method']
+                C = float(regularization['C'])
+            optimizer = data['optimizer']
+            optimizer_params = data['optimizer_params']
+
+            print(school)
+            print(method)
+            print(C)
+            print(optimizer)
+            print(optimizer_params)
+
+            return()
+
+            """
+
+            astronomy = float(data['astronomy']) # -1000 < astronomy < 1000
+            herbology = float(data['herbology']) # -10 < herbology < 10
+            ancient_runes = float(data['ancient_runes']) # 250 < ancient_runes < 750
 
             X = np.array([[astronomy, herbology, ancient_runes]])
 
@@ -104,7 +120,7 @@ def transfer():
             prediction = logreg.predict(X_to_predict=sc.X)
 
             return jsonify({'house':prediction[0][0],'probas':prediction[1][0]})
-
+            """
         except ValueError:
             return "Please enter values in the correct format: {\"school\":str, \"astronomy\":-1000<f"
 
@@ -112,4 +128,4 @@ def transfer():
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug=True)
