@@ -5,13 +5,20 @@ from model.logistic_regression import LogisticRegression
 from model.preprocessing import Scaling
 import model.logreg_train
 
-"""
-- https://www.wintellect.com/creating-machine-learning-web-api-flask/
-- https://cloud.google.com/appengine/docs/standard/python/getting-started/python-standard-env
-- https://github.com/Wintellect/DataScienceExamples/blob/master/Regression/SimpleLinearRegressionAPI.py
-"""
 
 app = Flask(__name__)
+
+
+# Train the model on the base dataset
+@app.route('/')
+def home():
+    if request.method == 'GET':
+        return ("""
+        Welcome to Hogwarts!\n
+        1. You can train a logistic regression model that tells which house you belong to by going on https://hogwarts42-api-heroku.herokuapp.com/train (NB: it might take a few seconds to let the model train)\n
+        2. You can see which house you belong to by typing something like https://hogwarts42-api-heroku.herokuapp.com/predict?school=polytechnique&astronomy=-800&herbology=-2&ancient_runes=300\n
+        3. You can train a new model with transfer learning by going on https://hogwarts42-api-heroku.herokuapp.com/transfer But you'll need to send a lot of data, so a python script would be much more suitable.\n
+        """)
 
 
 

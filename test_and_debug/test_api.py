@@ -4,8 +4,11 @@ import numpy as np
 import pandas as pd
 import os
 
+# Use this to test locally
+# BASE_URL = 'http://127.0.0.1:5000'
 
-BASE_URL = 'http://127.0.0.1:5000'
+# Use this to test the heroku version
+BASE_URL = 'https://hogwarts42-api-heroku.herokuapp.com'
 
 
 # Train the model on the base dataset
@@ -48,8 +51,8 @@ data = json.dumps({
     'optimizer':'sgd',
     'optimizer_params':{
         'alpha':0.1,
-        'n':5,
-        'batch_size':14
+        'n':3,
+        'batch_size':40
     },
     'X':X.tolist(),
     'y':y.tolist()

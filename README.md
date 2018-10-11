@@ -42,6 +42,28 @@ Or by using scripts such as [`test_api.py`](https://github.com/SachaIZADI/Disrup
 
 #### On the cloud
 
-TBC
+I chosed to deploy the API on the cloud, mostly for time and money constraints. It is accessible on
+
+    https://hogwarts42-api-heroku.herokuapp.com
+    
+You can play with the model and make a couple predictions by running.
+
+    https://hogwarts42-api-heroku.herokuapp.com/predict?school=polytechnique&astronomy=-800&herbology=-2&ancient_runes=300
+
+Alternatively, you can write scripts that directly query the API. Just change the `BASE_URL` value in [`test_api.py`](https://github.com/SachaIZADI/DisruptHogwarts_API/blob/master/test_and_debug/test_api.py) for instance.
+
+<img src = "img/base_url.png" height="150"> <img src = "img/python_api.png" height="150">
+
+.
+
+_Note to myself: Useful heroku guidelines and commands_
+
+A good [article](https://medium.com/the-andela-way/deploying-your-flask-application-to-heroku-c99050bce8f9), and the classic commands
+
+    git push heroku master
+    heroku ps:scale web=1
+    heroku open
+    heroku logs
+
 
 
