@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
-from model.logistic_regression import LogisticRegression
-from model.preprocessing import Scaling
 import numpy as np
 import json
+from model.logistic_regression import LogisticRegression
+from model.preprocessing import Scaling
+import model.logreg_train
 
 """
 - https://www.wintellect.com/creating-machine-learning-web-api-flask/
@@ -14,6 +15,20 @@ import json
 app = Flask(__name__)
 
 
+
+# Train the model on the base dataset
+@app.route('/train')
+def train():
+    if request.method == 'GET':
+        features, beta = model.logreg_train.train()
+        features = list(features)
+        for b in beta :
+            beta[b] = list(beta[b])
+        return jsonify({'features':features, 'beta':beta})
+
+
+
+# Make a prediction: argmax P(y|X=x)
 @app.route('/predict',methods=['GET', 'POST'])
 def predict():
     if request.method == 'GET':
@@ -43,23 +58,18 @@ def predict():
                 logreg = LogisticRegression(path_to_beta='results/beta_%s.json' % school)
                 sc = Scaling(X, path_to_scaling='results/scaling_%s.json' % school)
 
-
             sc.transform()
-            X_scaled = sc.X
             prediction = logreg.predict(X_to_predict=sc.X)
 
-            return str(prediction)
-            #return jsonify ({'house':house, 'proba':proba})
-
+            return jsonify({'house':prediction[0][0],'probas':prediction[1][0]})
 
         except ValueError:
-            return "Please enter a number."
+            return "Please enter values in the correct format: {\"school\":str, \"astronomy\":-1000<float<1000, \"herbology\":-10<float<10, \"ancient_runes\":250<float<750}."
 
 
-
-@app.route('/train')
-def hello_world1():
-    return 'Hello World 1!'
+@app.route('/transfer')
+def transfer():
+    return(True)
 
 
 

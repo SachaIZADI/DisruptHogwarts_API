@@ -1,13 +1,12 @@
-import sys
 import os
-from logistic_regression import LogisticRegression
-from preprocessing import MeanImputation, Scaling
-from describe import DataSet
-from utils import convert_to_float
+from model.logistic_regression import LogisticRegression
+from model.preprocessing import MeanImputation, Scaling
+from model.describe import DataSet
+from model.utils import convert_to_float
 import numpy as np
 
 
-def main():
+def train():
 
     dirname = os.path.dirname(__file__)
     output_dirname = os.path.join(dirname, 'results')
@@ -17,9 +16,7 @@ def main():
     except:
         os.mkdir(output_dirname)
 
-
-
-    file_name = sys.argv[1]
+    file_name = 'resources/dataset_train.csv'
     dirname = os.path.dirname(__file__)
     file_name = os.path.join(dirname, file_name)
 
@@ -49,7 +46,7 @@ def main():
 
     X = np.array([[d.data_set[i][j] for j in range(len(d.data_set[0])) if j not in to_remove]
                 for i in range(len(d.data_set))])
-    #features = X[0,:]
+    features = X[0,:]
     X = convert_to_float(X[1:,])
 
     y_col_nb = d.data_set[0].index('Hogwarts House')
@@ -67,7 +64,4 @@ def main():
     l = LogisticRegression(X=X, y=y)
     l.train()
 
-
-
-if __name__=='__main__':
-    main()
+    return features, l.beta

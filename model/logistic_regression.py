@@ -228,7 +228,9 @@ class LogisticRegression:
         if X_to_predict is None:
             X_to_predict = self.X
         prediction = []
+        list_probas =[]
         for x in X_to_predict:
             probas = self.probabilities(x)
+            list_probas += [probas]
             prediction += [max(probas, key=probas.get)]
-        return prediction
+        return prediction, list_probas
