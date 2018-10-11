@@ -69,7 +69,44 @@ def predict():
 
 @app.route('/transfer')
 def transfer():
-    return(True)
+    if request.method == 'GET':
+        try:
+            try:
+                #TODO : WORK ON HERE
+                # Data is sent via a .py script like in tests/test_api.py
+                data = json.loads(request.json)
+                school = data['school']
+                astronomy = float(data['astronomy']) # -1000 < astronomy < 1000
+                herbology = float(data['herbology']) # -10 < herbology < 10
+                ancient_runes = float(data['ancient_runes']) # 250 < ancient_runes < 750
+            except:
+                # Data is sent via an url (e.g. in Chrome)
+                # http://127.0.0.1:5000/predict?school=hogwarts&astronomy=-800&herbology=-2&ancient_runes=300
+                data = request.args
+                school = data.get('school')
+                astronomy = float(data.get('astronomy'))
+                herbology = float(data.get('herbology'))
+                ancient_runes = float(data.get('ancient_runes'))
+
+            X = np.array([[astronomy, herbology, ancient_runes]])
+
+            l = LogisticRegression(X, y, regularization='l2', C=.4, optimizer_params={'alpha': 0.01, 'n': 3})
+            l.transfer_learning('hec')
+
+            if school == 'hogwarts':
+                logreg = LogisticRegression(path_to_beta='results/beta.json')
+                sc = Scaling(X, path_to_scaling='results/scaling.json')
+            else:
+                logreg = LogisticRegression(path_to_beta='results/beta_%s.json' % school)
+                sc = Scaling(X, path_to_scaling='results/scaling_%s.json' % school)
+
+            sc.transform()
+            prediction = logreg.predict(X_to_predict=sc.X)
+
+            return jsonify({'house':prediction[0][0],'probas':prediction[1][0]})
+
+        except ValueError:
+            return "Please enter values in the correct format: {\"school\":str, \"astronomy\":-1000<f"
 
 
 

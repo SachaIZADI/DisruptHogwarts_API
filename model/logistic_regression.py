@@ -144,7 +144,7 @@ class LogisticRegression:
         for label in self.unique_labels:
             full_gradient[label] = -1/m * full_gradient[label]
             if self.regularization=='l2':
-                full_gradient[label] += 2 * self.C * self.beta[label]
+                full_gradient[label] += 2 * self.C * np.array(self.beta[label])
         return full_gradient
 
 
@@ -218,6 +218,35 @@ class LogisticRegression:
             for label in self.unique_labels:
                 beta_json[label] = list(self.beta[label])
             json.dump(beta_json, outfile)
+
+
+    def transfer_learning(self, school):
+
+        # Load the base model (logistic regression trained on the base training set)
+        dirname = os.path.dirname(__file__)
+        file_name = os.path.join(dirname, 'results/beta.json')
+        with open(file_name, 'r') as f:
+            self.beta = json.loads(f.read())
+        self.unique_labels = [key for key in self.beta]
+
+        # Trains the model based on new data
+        if self.optimizer == 'gradient_descent':
+            self.gradient_descent()
+        elif self.optimizer == 'sgd':
+            self.stochastic_gradient_descent()
+        #TODO : add other optimizers Adam, Newton-Raphson
+        else:
+            return
+
+        # Beta is automatically saved in a json file in results
+        dirname = os.path.dirname(__file__)
+        file_name = os.path.join(dirname, 'results/beta_%s.json' % school)
+        with open(file_name, 'w+') as outfile:
+            beta_json = {}
+            for label in self.unique_labels:
+                beta_json[label] = list(self.beta[label])
+            json.dump(beta_json, outfile)
+
 
 
     def predict(self, X_to_predict=None):
