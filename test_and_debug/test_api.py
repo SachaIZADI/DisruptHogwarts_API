@@ -36,7 +36,7 @@ data = json.dumps({
         'n':5,
         'batch_size':14
     },
-    'X':np.array([[1,2,2],[1,3,1],[1,5,6],[1,4,7]]).tolist(),
+    'X':np.array([[1,2,2],[1,3,1],[-1,5,6],[2,4,7]]).tolist(),
     'y':np.array(["Gryffindor","Hufflepuff","Ravenclaw","Slytherin"]).tolist()
 })
 
