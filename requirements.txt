@@ -12,5 +12,6 @@ post==1.0.2
 public==1.0.3
 query-string==1.0.2
 request==1.0.2
-setuptools	39.0.1	40.4.3
-urllib3	1.23	1.23
+setuptools==39.0.1
+urllib3==1.23
+pandas==0.23.4

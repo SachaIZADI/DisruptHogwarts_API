@@ -14,6 +14,7 @@ import model.logreg_train
 app = Flask(__name__)
 
 
+
 # Train the model on the base dataset
 @app.route('/train')
 def train():
@@ -26,13 +27,14 @@ def train():
 
 
 
+
 # Make a prediction: argmax P(y|X=x)
 @app.route('/predict',methods=['GET', 'POST'])
 def predict():
     if request.method == 'GET':
         try:
             try:
-                # Data is sent via a .py script like in tests/test_api.py
+                # Data is sent via a .py script like in test_and_debug/test_api.py
                 data = json.loads(request.json)
                 school = data['school']
                 astronomy = float(data['astronomy']) # -1000 < astronomy < 1000
@@ -66,6 +68,9 @@ def predict():
 
 
 
+
+
+
 # Transfer learning function : Takes the estimate of ß based on hogwarts data as a starting point, and estimate ß for another school (e.g. 'polytechnique')
 @app.route('/transfer')
 def transfer():
@@ -76,51 +81,37 @@ def transfer():
     # Send sgd / gd + params (alpha, n, batch_size)
     if request.method == 'GET':
         try:
-            #TODO : WORK ON HERE
-            # Data is sent via a .py script like in tests/test_api.py
+            # Load the data (sent via a .py script similar to test_and_debug/test_api.py)
             data = json.loads(request.json)
             school = data['school']
             regularization = data['regularization']
-            if regularization['method'] == 'None':
-                method = None
+            method = regularization['method']
+            if method is None:
                 C = 0
             else :
-                method = regularization['method']
                 C = float(regularization['C'])
             optimizer = data['optimizer']
             optimizer_params = data['optimizer_params']
 
-            print(school)
-            print(method)
-            print(C)
-            print(optimizer)
-            print(optimizer_params)
+            X = np.array(data['X'])
+            y = np.array(data['y'])
 
-            return()
-
-            """
-
-            astronomy = float(data['astronomy']) # -1000 < astronomy < 1000
-            herbology = float(data['herbology']) # -10 < herbology < 10
-            ancient_runes = float(data['ancient_runes']) # 250 < ancient_runes < 750
-
-            X = np.array([[astronomy, herbology, ancient_runes]])
-
-            l = LogisticRegression(X, y, regularization='l2', C=.4, optimizer_params={'alpha': 0.01, 'n': 3})
-            l.transfer_learning('hec')
-
-            if school == 'hogwarts':
-                logreg = LogisticRegression(path_to_beta='results/beta.json')
-                sc = Scaling(X, path_to_scaling='results/scaling.json')
-            else:
-                logreg = LogisticRegression(path_to_beta='results/beta_%s.json' % school)
-                sc = Scaling(X, path_to_scaling='results/scaling_%s.json' % school)
-
+            sc = Scaling(X, school=school)
+            sc.train()
             sc.transform()
-            prediction = logreg.predict(X_to_predict=sc.X)
 
-            return jsonify({'house':prediction[0][0],'probas':prediction[1][0]})
-            """
+            l = LogisticRegression(sc.X, y,
+                                   regularization=method, C=C,
+                                   optimizer=optimizer, optimizer_params=optimizer_params)
+            l.transfer_learning(school)
+
+            beta = l.beta
+            for b in beta:
+                beta[b] = list(beta[b])
+
+
+            return jsonify({'loss':l.loss(), 'beta':beta})
+
         except ValueError:
             return "Please enter values in the correct format: {\"school\":str, \"astronomy\":-1000<f"
 
