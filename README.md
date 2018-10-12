@@ -40,19 +40,26 @@ Or by using scripts such as [`test_api.py`](https://github.com/SachaIZADI/Disrup
 
 <img src = "img/train.png" height="150"> <img src = "img/predict.png" height="150"> <img src = "img/transfer.png" height="150"> <img src = "img/predict_new.png" height="150">
 
+**NB:** Make sure that the `BASE_URL` variable is set upt to `http://127.0.0.1:5000`
+<img src = "img/base_url.png" height="150"> 
+
 #### On the cloud
 
-I chosed to deploy the API on the cloud, mostly for time and money constraints. It is accessible on
+I chosed to deploy the API on Heroku, mostly for time and money constraints. It is accessible on
 
     https://hogwarts42-api-heroku.herokuapp.com
     
 You can play with the model and make a couple predictions by running.
 
     https://hogwarts42-api-heroku.herokuapp.com/predict?school=polytechnique&astronomy=-800&herbology=-2&ancient_runes=300
-
+    
+    https://hogwarts42-api-heroku.herokuapp.com/predict?school=polytechnique&astronomy=800&herbology=2&ancient_runes=700
+    
 Alternatively, you can write scripts that directly query the API. Just change the `BASE_URL` value in [`test_api.py`](https://github.com/SachaIZADI/DisruptHogwarts_API/blob/master/test_and_debug/test_api.py) for instance.
 
-<img src = "img/base_url.png" height="150"> <img src = "img/python_api.png" height="150">
+<img src = "img/base_url.png" height="75"> 
+
+<img src = "img/python_api.png" height="250">
 
 .
 
