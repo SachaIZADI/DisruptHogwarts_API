@@ -41,7 +41,7 @@ Or by using scripts such as [`test_api.py`](https://github.com/SachaIZADI/Disrup
 <img src = "img/train.png" height="150"> <img src = "img/predict.png" height="150"> <img src = "img/transfer.png" height="150"> <img src = "img/predict_new.png" height="150">
 
 **NB:** Make sure that the `BASE_URL` variable is set upt to `http://127.0.0.1:5000`
-<img src = "img/base_url.png" height="150"> 
+<img src = "img/base_url.png" height="75"> 
 
 #### On the cloud
 
